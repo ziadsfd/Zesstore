@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            box-sizing: border-box;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .logo1 {
+            height: 90px;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(34, 34, 34, 0.9);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            color: white;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #00bcd4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 1rem;
+        }
+        .cart-items {
+            margin-bottom: 20px;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .cart-item:hover {
+            transform: scale(1.03);
+        }
+        .cart-item img {
+            max-width: 100px;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item h4 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .cart-item span {
+            font-size: 1rem;
+            color: #555;
+        }
+        .total-price {
+            font-size: 1.6rem;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .checkout-button, .back-button {
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 20px;
+        }
+        .checkout-button {
+            background-color: #007BFF;
+        }
+        .checkout-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .checkout-button:active {
+            transform: scale(0.98);
+        }
+
+        
+        .back-button {
+            background-color: #FF6347; 
+        }
+        .back-button:hover {
+            background-color: #e53e30; 
+            transform: scale(1.05);
+        }
+        .back-button:active {
+            transform: scale(0.98);
+        }
+
+        
+        .remove-button {
+            background-color: #FF6347;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .remove-button:hover {
+            background-color: #ff4500;
+            transform: scale(1.1);
+        }
+
+        .remove-button:active {
+            transform: scale(0.95);
+        }
+
+        
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .cart-item img {
+                max-width: 80px;
+            }
+            .cart-item-details {
+                margin-left: 10px;
+            }
+            .total-price {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" crossorigin="anonymous"></script>
+    <script>
+        
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartContainer = document.getElementById('cart-items');
+            const totalPriceElement = document.getElementById('total-price');
+            let totalPrice = 0;
+
+            cartContainer.innerHTML = '';  
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = `<p>Your cart is empty.</p>`;
+            }
+
+            cart.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <h4>${item.name}</h4>
+                        <span>${item.price} MAD</span>
+                    </div>
+                    <button class="remove-button" onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartContainer.appendChild(itemElement);
+                totalPrice += item.price;
+            });
+
+            totalPriceElement.innerText = `Total: ${totalPrice} MAD`;
+        }
+
+        
+        function removeFromCart(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1); 
+            localStorage.setItem('cart', JSON.stringify(cart)); 
+            loadCart(); 
+        }
+
+        
+        window.onbeforeunload = function () {
+            localStorage.removeItem('cart');
+        };
+
+        
+        window.onload = loadCart;
+    </script>
+</head>
+<body>
+    <header>
+        <a href="home.html">
+            <img src="logo.webp" alt="Company Logo" class="logo1">
+        </a>
+    </header>
+    <nav>
+        <div class="logo">Digital Store</div>
+        <div class="nav-links">
+            <a href="home.html"><i class="fas fa-home"></i>Home</a>
+            <a href="digital product.html"><i class="fas fa-box"></i>Products</a>
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i>Cart</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="cart-items" id="cart-items"></div>
+        <div class="total-price" id="total-price">Total: 0 MAD</div>
+        <button class="checkout-button">Proceed to Checkout</button>
+        <button class="back-button" onclick="window.history.back();">Back</button>
+    </div>
+</body>
+</html>
