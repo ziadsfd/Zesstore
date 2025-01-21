@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Product Store</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #222;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .logo1 {
+            height: 90px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #00bcd4;
+        }
+        #cart-counter {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .product {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .product h3 {
+            margin: 0.5rem 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .product p {
+            color: #777;
+            margin: 10px 0;
+        }
+        .price {
+            font-size: 1.3rem;
+            color: #333;
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+        .product button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.6rem 1.2rem;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .product button:hover {
+            background-color: #0056b3;
+        }
+        #cart-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            display: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        
+        .product-details {
+            margin-top: 1rem;
+            color: #555;
+            display: none;
+            text-align: left;
+        }
+        .product-details ul {
+            padding-left: 20px;
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function addToCart(product) {
+            const productDetails = {
+                name: product.name,
+                price: product.price,
+                image: product.image
+            };
+
+            
+            cart.push(productDetails);
+
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            
+            const cartMessage = document.getElementById("cart-message");
+            cartMessage.innerText = `${product.name} has been added to your cart.`;
+            cartMessage.style.display = "block";
+            updateCartCounter(); 
+        }
+
+        
+        function updateCartCounter() {
+            const cartCounter = document.getElementById("cart-counter");
+            const cartLength = cart.length;
+            if (cartLength > 0) {
+                cartCounter.style.display = "block";
+                cartCounter.innerText = cartLength;
+            } else {
+                cartCounter.style.display = "none";
+            }
+        }
+
+        
+        window.onload = updateCartCounter;
+
+        
+        function toggleDetails(button) {
+            const productDetails = button.previousElementSibling;  
+            
+            if (productDetails.style.display === "none" || productDetails.style.display === "") {
+                productDetails.style.display = "block";
+                button.innerText = "Hide Details";
+            } else {
+                productDetails.style.display = "none";
+                button.innerText = "Show Details";
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <a href="home.html">
+            <img src="logo.webp" alt="Company Logo" class="logo1">
+        </a>
+    </header>
+    <nav>
+        <div class="logo">Digital Store</div>
+        <div class="nav-links">
+            <a href="home.html"><i class="fas fa-home"></i>Home</a>
+            <a href="digital product.html"><i class="fas fa-box"></i>Products</a>
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i>Cart <span id="cart-counter" style="display:none;">0</span></a>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="cart-message"></div>  
+        <div class="products" id="products">
+            
+            <div class="product">
+                <img src="netflix.png" alt="Netflix">
+                <h3>Netflix Subscription</h3>
+                <p>Enjoy premium access to Netflix content.</p>
+                <div class="price">120 MAD</div>
+                
+                
+                <div class="product-details" style="display: none;">
+                    <p>Enjoy unlimited streaming on all your devices. Access exclusive movies and shows only available on Netflix.</p>
+                    <ul>
+                        <li>Unlimited Movies and TV Shows</li>
+                        <li>Offline Viewing</li>
+                        <li>Multi-Device Support</li>
+                    </ul>
+                </div>
+                
+                
+                <button onclick="toggleDetails(this)">Show Details</button>
+                
+                <button onclick="addToCart({name: 'Netflix Subscription', price: 120, image: 'netflix.png'})">Add to Cart</button>
+            </div>
+
+            
+            <div class="product">
+                <img src="spotify.png" alt="Spotify">
+                <h3>Spotify Premium</h3>
+                <p>Stream music without limits.</p>
+                <div class="price">90 MAD</div>
+                
+                
+                <div class="product-details" style="display: none;">
+                    <p>Stream your favorite music without interruptions and download songs for offline listening.</p>
+                    <ul>
+                        <li>Ad-free Music</li>
+                        <li>Offline Listening</li>
+                        <li>High-Quality Audio</li>
+                    </ul>
+                </div>
+                
+                
+                <button onclick="toggleDetails(this)">Show Details</button>
+                
+                <button onclick="addToCart({name: 'Spotify Premium', price: 90, image: 'spotify.png'})">Add to Cart</button>
+            </div>
+
+            
+            <div class="product">
+                <img src="aplleone.png" alt="AppleOne">
+                <h3>AppleOne</h3>
+                <p>Enjoy premium access to AppleONE content.</p>
+                <div class="price">200 MAD</div>
+                
+                
+                <div class="product-details" style="display: none;">
+                    <p>Access to Apple services like Apple Music, iCloud, Apple TV+, and more in one subscription.</p>
+                    <ul>
+                        <li>Apple Music</li>
+                        <li>Apple TV+</li>
+                        <li>iCloud Storage</li>
+                        <li>Apple Arcade</li>
+                    </ul>
+                </div>
+                
+                
+                <button onclick="toggleDetails(this)">Show Details</button>
+                
+                <button onclick="addToCart({name: 'AppleOne', price: 200, image: 'aplleone.png'})">Add to Cart</button>
+            </div>
+
+            
+            <div class="product">
+                <img src="shopify.jfif" alt="Shoopify">
+                <h3>Shoopify</h3>
+                <p>Shoopify without limits.</p>
+                <div class="price">300 MAD</div>
+                
+                
+                <div class="product-details" style="display: none;">
+                    <p>Build your online store with Shopify and sell worldwide.</p>
+                    <ul>
+                        <li>Easy Store Setup</li>
+                        <li>Payment Integration</li>
+                        <li>Customizable Themes</li>
+                    </ul>
+                </div>
+                
+                
+                <button onclick="toggleDetails(this)">Show Details</button>
+                
+                <button onclick="addToCart({name: 'Shoopify', price: 300, image: 'shopify.jfif'})">Add to Cart</button>
+            </div>
+
+            
+            <div class="product">
+                <img src="iptv.jfif" alt="iptv">
+                <h3>IPTV Subscription</h3>
+                <p>Enjoy premium access IPTV content.</p>
+                <div class="price">110 MAD</div>
+                
+                
+                <div class="product-details" style="display: none;">
+                    <p>Access a wide range of channels and shows from around the world with an IPTV subscription.</p>
+                    <ul>
+                        <li>Live TV Channels</li>
+                        <li>Movies and Sports</li>
+                        <li>HD and 4K Content</li>
+                    </ul>
+                </div>
+                
+                
+                <button onclick="toggleDetails(this)">Show Details</button>
+                
+                <button onclick="addToCart({name: 'IPTV Subscription', price: 110, image: 'iptv.jfif'})">Add to Cart</button>
+            </div>
+
+            
+            <div class="product">
+                <img src="hbomax.jfif" alt="HBO Max">
+                <h3>HBO Max</h3>
+                <p>Get access to all HBO series and movies.</p>
+                <div class="price">150 MAD</div>
+                
+                
+                <div class="product-details" style="display: none;">
+                    <p>Watch exclusive HBO shows, movies, and documentaries with HBO Max.</p>
+                    <ul>
+                        <li>Popular TV Shows</li>
+                        <li>Blockbuster Movies</li>
+                        <li>Documentaries</li>
+                    </ul>
+                </div>
+                
+                
+                <button onclick="toggleDetails(this)">Show Details</button>
+                
+                <button onclick="addToCart({name: 'HBO Max', price: 150, image: 'hbo.png'})">Add to Cart</button>
+            </div>
+
+            
+            <div class="product">
+                <img src="chatgpt.png" alt="ChatGPT Premium">
+                <h3>ChatGPT Premium</h3>
+                <p>Experience advanced AI capabilities with ChatGPT Premium.</p>
+                <div class="price">250 MAD</div>
+
+                
+                <div class="product-details" style="display: none;">
+                    <p>Enjoy faster responses, priority access to new features, and a more powerful version of ChatGPT.</p>
+                    <ul>
+                        <li>Faster Response Times</li>
+                        <li>Priority Access to Features</li>
+                        <li>Enhanced Capabilities</li>
+                    </ul>
+                </div>
+
+                
+                <button onclick="toggleDetails(this)">Show Details</button>
+
+                <button onclick="addToCart({name: 'ChatGPT Premium', price: 250, image: 'chatgpt.png'})">Add to Cart</button>
+            </div>
+
+            
+            <div class="product">
+                <img src="ytbprm.png" alt="YouTube Premium">
+                <h3>YouTube Premium</h3>
+                <p>Stream YouTube without ads and enjoy offline playback.</p>
+                <div class="price">150 MAD</div>
+
+                
+                <div class="product-details" style="display: none;">
+                    <p>Get access to ad-free YouTube videos, YouTube Music, and the ability to download videos for offline viewing.</p>
+                    <ul>
+                        <li>Ad-Free Videos</li>
+                        <li>YouTube Music</li>
+                        <li>Offline Viewing</li>
+                    </ul>
+                </div>
+
+                
+                <button onclick="toggleDetails(this)">Show Details</button>
+
+                <button onclick="addToCart({name: 'YouTube Premium', price: 150, image: 'youtube.png'})">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
